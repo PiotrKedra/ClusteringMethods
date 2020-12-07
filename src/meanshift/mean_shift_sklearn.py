@@ -4,17 +4,14 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import MeanShift
 
 # LOAD DATA
-data_file = pd.read_csv('../../resources/2d_dataset/aggregation.csv')
-data_file.columns = ["c1", "c2", "group"]
-data = data_file.iloc[:, 0:2].copy()
-# data_file.plot(kind='scatter', x='c1', y='c2')
+data = pd.read_csv('../../resources/2d_dataset/r15.csv')
 
 # PREPARE MODEL
-kmeans = MeanShift(bandwidth=5)
+kmeans = MeanShift(bandwidth=1)
 kmeans.fit(data)
 y_kmeans = kmeans.predict(data)
 
 # SHOW CLUSTERS
-plt.scatter(data[['c1']], data[['c2']], c=y_kmeans)
+plt.scatter(data[['x']], data[['y']], c=y_kmeans)
 pyplot.show()
 
