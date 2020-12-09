@@ -128,10 +128,21 @@ def assign_points_to_proper_cluster(dataset, peaks):
     return result
 
 
+pyplot.figure(1)
 data = pd.read_csv('../../resources/2d_dataset/r15.csv')
 data.drop(['label'], axis=1, inplace=True)
-
 clusters = mean_shift(data, bandwidth=1)
+pyplot.scatter(data[['x']], data[['y']], c=clusters)
 
+pyplot.figure(2)
+data = pd.read_csv('../../resources/2d_dataset/aggregation.csv')
+data.drop(['label'], axis=1, inplace=True)
+clusters = mean_shift(data, bandwidth=7)
+pyplot.scatter(data[['x']], data[['y']], c=clusters)
+
+pyplot.figure(3)
+data = pd.read_csv('../../resources/2d_dataset/jain.csv')
+data.drop(['label'], axis=1, inplace=True)
+clusters = mean_shift(data, bandwidth=14)
 pyplot.scatter(data[['x']], data[['y']], c=clusters)
 pyplot.show()
