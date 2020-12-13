@@ -51,7 +51,7 @@ def recompute_centers():
 
 if __name__ == '__main__':
     # import data
-    df = pan.read_csv('../../resources/2d_dataset/d31.csv')
+    df = pan.read_csv('../../resources/2d_dataset/compound.csv')
 
     np.set_printoptions(precision=3, suppress=True)
 
@@ -64,7 +64,7 @@ if __name__ == '__main__':
     # print(x)
 
     # number of clusters
-    k = 31
+    k = 4
 
     # init clusters center
     # print("x.shape")
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     while change:
         set_closest_clusters()
         change = recompute_centers()
-        print_all()
+        # print_all()
 
     print("Final result:")
     print_all()
