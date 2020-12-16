@@ -55,17 +55,17 @@ def add_neighbours_to_cluster(neighbours, cluster_no):
         x[neighbour_id, 2] = cluster_no
 
 
-def mark_singles_as_noise():
-    number_of_clusters = np.max(x[:, 2].astype(np.int64))
-    singles = set()
-    for i in range(number_of_clusters):
-        number_of_points_in_cluster = np.count_nonzero(x[:, 2] == i + 1)
-        if number_of_points_in_cluster == 1:
-            singles.add(i + 1)
-
-    for curr_row in x:
-        if curr_row[2] in singles:
-            curr_row[2] = 0
+# def mark_singles_as_noise():
+#     number_of_clusters = np.max(x[:, 2].astype(np.int64))
+#     singles = set()
+#     for i in range(number_of_clusters):
+#         number_of_points_in_cluster = np.count_nonzero(x[:, 2] == i + 1)
+#         if number_of_points_in_cluster == 1:
+#             singles.add(i + 1)
+#
+#     for curr_row in x:
+#         if curr_row[2] in singles:
+#             curr_row[2] = 0
 
 
 if __name__ == '__main__':
@@ -102,11 +102,7 @@ if __name__ == '__main__':
                     found = find_not_visited_neighbours(x_to_add, to_add)
                     add_neighbours_to_cluster(to_add, last_cluster)
 
-
-    # mark_singles_as_noise()
-
     for x_curr_pr in x:
         print(x_curr_pr)
 
-    print(n)
     print_all()
