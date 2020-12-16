@@ -7,8 +7,6 @@ from sklearn.cluster import DBSCAN
 df = pd.read_csv('../../resources/2d_dataset/compound.csv')
 data = df.to_numpy()
 
-print(data)
-
 # PREPARE MODEL
 
 dbscan = DBSCAN(eps=1, min_samples=3)
