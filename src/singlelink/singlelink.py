@@ -6,7 +6,7 @@ from sklearn.preprocessing import normalize
 import scipy.cluster.hierarchy as shc
 
 #Load Data
-data = pd.read_csv("compound.csv", sep = ",")
+data = pd.read_csv("../../resources/2d_dataset/compound.csv", sep = ",")
 data
 
 #Normalize the Data
@@ -26,4 +26,4 @@ cluster.fit_predict(data_scaled)
 #SHow clusters
 plt.figure(figsize=(10, 7))  
 plt.scatter(data_scaled['x'], data_scaled['y'], c=cluster.labels_)
-pyplot.show()
+plt.show()

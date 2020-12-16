@@ -11,8 +11,8 @@ y_hc = hc.fit_predict(data)
 plt.scatter(data[['x']], data[['y']], c=y_hc)
 
 plt.figure(2)
-data = pd.read_csv('../../resources/2d_dataset/aggregation.csv')
-hc = AgglomerativeClustering(n_clusters=6, affinity='euclidean', linkage='ward')
+data = pd.read_csv('../../resources/2d_dataset/compound.csv')
+hc = AgglomerativeClustering(n_clusters=3, linkage='ward')
 y_hc = hc.fit_predict(data)
 plt.scatter(data[['x']], data[['y']], c=y_hc)
 

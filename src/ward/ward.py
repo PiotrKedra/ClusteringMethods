@@ -55,11 +55,11 @@ def get_centroid_of_merged_clusters(merged_cluster):
     return mean(merged_cluster, axis=0)
 
 
-data = pd.read_csv('../../resources/2d_dataset/aggregation.csv')
+data = pd.read_csv('../../resources/2d_dataset/compound.csv')
 data.drop(['label'], axis=1, inplace=True)
 # data = pd.read_csv('../meanshift/testing.csv')
 
-clusters = ward(data, n_clusters=6)
+clusters = ward(data, n_clusters=3)
 
 plt.scatter(data[['x']], data[['y']], c=clusters)
 plt.show()
