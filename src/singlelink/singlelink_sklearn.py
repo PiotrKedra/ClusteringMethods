@@ -1,30 +1,15 @@
-import numpy as np
 import pandas as pd
+from matplotlib import pyplot
 import matplotlib.pyplot as plt
 from sklearn.cluster import AgglomerativeClustering
-from sklearn.preprocessing import normalize
-import scipy.cluster.hierarchy as shc
 
-#Load Data
-data = pd.read_csv("/Users/baur/desktop/study/ai/ClusteringMethods/resources/2d_dataset/compound.csv", sep = ",")
-data
+# data = pd.read_csv("/Users/baur/desktop/study/ai/ClusteringMethods/resources/2d_dataset/compound.csv", sep = ",")
 
-#Normalize the Data
-data_scaled = normalize(data)
-data_scaled = pd.DataFrame(data_scaled, columns=data.columns)
-data_scaled
 
-#Show dendogram
-plt.figure(figsize=(10, 7))  
-plt.title("Dendrograms")  
-dend = shc.dendrogram(shc.linkage(data_scaled, method='ward'))
-plt.axhline(y=6, color='r', linestyle='--')
+plt.figure(1)
+data = pd.read_csv('../meanshift/testing.csv')
+hc = AgglomerativeClustering(n_clusters=3, affinity='euclidean', linkage='complete')
+y_hc = hc.fit_predict(data)
+plt.scatter(data[['x']], data[['y']], c=y_hc)
 
-cluster = AgglomerativeClustering(n_clusters=2, affinity='euclidean', linkage='ward')  
-cluster.fit_predict(data_scaled)
-
-#Show clusters
-plt.figure(figsize=(10, 7))
-plt.title("Clusters")  
-plt.scatter(data_scaled['x'], data_scaled['y'], c=cluster.labels_)
-plt.show()
+pyplot.show()
