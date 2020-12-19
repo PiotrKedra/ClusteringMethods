@@ -30,7 +30,7 @@ def find_not_visited_neighbours(x_curr_i, neighbours):
     for i in range(n):
         distance = dist(x_curr, x[i][:-1])
         # print(distance)
-        if x[i][2] < 0 and distance <= alpha and i not in neighbours:
+        if x[i][2] < 0 and distance <= eps and i not in neighbours:
             neighbours.add(i)
             added = True
     return added
@@ -42,7 +42,7 @@ def how_many_neighbours(x_curr_i):
     for i in range(n):
         distance = dist(x_curr, x[i][:-1])
         # print(distance)
-        if distance <= alpha:
+        if distance <= eps:
             count += 1
 
     return count
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     x = np.concatenate((x_without_clusters, initial_clusters), axis=1)
 
     # given values
-    alpha = 1
+    eps = 1
     min_no_of_neighbours = 3
 
     last_cluster = 0
