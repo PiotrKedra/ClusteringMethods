@@ -61,12 +61,12 @@ def distance_for_single_linkage(cluster1, cluster2, distance_matrix):
 
 
 def distance_for_complete_linkage(cluster1, cluster2, distance_matrix):
-    min_dist = distance_matrix[cluster1[0]][cluster2[0]]
+    max_dist = distance_matrix[cluster1[0]][cluster2[0]]
     for index_1 in cluster1:
         for index_2 in cluster2:
-            if distance_matrix[index_1][index_2] > min_dist:
-                min_dist = distance_matrix[index_1][index_2]
-    return min_dist
+            if distance_matrix[index_1][index_2] > max_dist:
+                max_dist = distance_matrix[index_1][index_2]
+    return max_dist
 
 
 def get_distance_matrix(data):
