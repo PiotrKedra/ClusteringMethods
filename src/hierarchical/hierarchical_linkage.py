@@ -78,7 +78,7 @@ def get_distance_matrix(data):
     return distance_matrix
 
 
-df = pd.read_csv('../../resources/2d_dataset/jain.csv')
-y_c = hierarchical_linkage(df, linkage='complete', n_clusters=2)
-plt.scatter(df[['x']], df[['y']], c=y_c)
-plt.show()
+# df = pd.read_csv('../../resources/2d_dataset/jain.csv')
+# y_c = hierarchical_linkage(df, linkage='single', n_clusters=2)
+# plt.scatter(df[['x']], df[['y']], c=y_c)
+# plt.show()
