@@ -11,12 +11,12 @@ import numpy as np
 from math import dist
 
 
-def print_all():
+def print_all(x):
     plt.scatter(x[:, 0], x[:, 1], c=x[:, 2])
     plt.show()
 
 
-def find_not_visited():
+def find_not_visited(x, n):
     for i in range(n):
         if x[i][2] < 0:
             return i
@@ -24,7 +24,7 @@ def find_not_visited():
     return -1
 
 
-def find_not_visited_neighbours(x_curr_i, neighbours):
+def find_not_visited_neighbours(x, eps, n, x_curr_i, neighbours):
     added = False
     x_curr = x[x_curr_i][:-1]
     for i in range(n):
@@ -36,7 +36,7 @@ def find_not_visited_neighbours(x_curr_i, neighbours):
     return added
 
 
-def how_many_neighbours(x_curr_i):
+def how_many_neighbours(x, eps, n, x_curr_i):
     count = 0
     x_curr = x[x_curr_i][:-1]
     for i in range(n):
@@ -48,10 +48,10 @@ def how_many_neighbours(x_curr_i):
     return count
 
 
-def add_neighbours_to_cluster(neighbours, cluster_no):
+def add_neighbours_to_cluster(x, eps, n, neighbours, cluster_no):
     while len(neighbours) > 0:
         neighbour_id = neighbours.pop()
-        find_not_visited_neighbours(neighbour_id, neighbours)
+        find_not_visited_neighbours(x, eps, n, neighbour_id, neighbours)
         x[neighbour_id, 2] = cluster_no
 
 
@@ -68,9 +68,9 @@ def add_neighbours_to_cluster(neighbours, cluster_no):
 #             curr_row[2] = 0
 
 
-if __name__ == '__main__':
+def dbscan(eps, min_no_of_neighbours, filename):
     # import data
-    df = pan.read_csv('../../resources/2d_dataset/compound.csv')
+    df = pan.read_csv(filename)
     np.set_printoptions(precision=3, suppress=True)
 
     # normalize
@@ -81,17 +81,17 @@ if __name__ == '__main__':
     x = np.concatenate((x_without_clusters, initial_clusters), axis=1)
 
     # given values
-    eps = 1
-    min_no_of_neighbours = 3
+    # eps = 1
+    # min_no_of_neighbours = 3
 
     last_cluster = 0
     all_visited = False
     while not all_visited:
-        x_to_add = find_not_visited()
+        x_to_add = find_not_visited(x, n)
         if x_to_add < 0:
             all_visited = True
         else:
-            no_of_n = how_many_neighbours(x_to_add)
+            no_of_n = how_many_neighbours(x, eps, n, x_to_add)
             if no_of_n < min_no_of_neighbours:
                 x[x_to_add, 2] = 0
             else:
@@ -99,10 +99,12 @@ if __name__ == '__main__':
                 to_add = set()
                 last_cluster += 1
                 while found:
-                    found = find_not_visited_neighbours(x_to_add, to_add)
-                    add_neighbours_to_cluster(to_add, last_cluster)
+                    found = find_not_visited_neighbours(x, eps, n, x_to_add, to_add)
+                    add_neighbours_to_cluster(x, eps, n, to_add, last_cluster)
 
-    for x_curr_pr in x:
-        print(x_curr_pr)
+    # for x_curr_pr in x:
+    #     print(x_curr_pr)
 
-    print_all()
+    # print_all(x)
+
+    return x
