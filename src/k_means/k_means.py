@@ -4,13 +4,13 @@ import numpy as np
 from math import dist
 
 
-def print_all():
+def print_all(x, clusters):
     plt.scatter(x[:, 0], x[:, 1], c=x[:, 2])
     plt.scatter(clusters[:, 0], clusters[:, 1], c=clusters[:, 2], edgecolors='black', linewidth=2)
     plt.show()
 
 
-def find_closest_cluster(x0, x1):
+def find_closest_cluster(x0, x1, clusters):
     closest_dist = dist((x0, x1), (clusters[0][0], clusters[0][1]))
     closest_cluster = 0
     for i in range(clusters.shape[0]):
@@ -22,13 +22,13 @@ def find_closest_cluster(x0, x1):
     return closest_cluster
 
 
-def set_closest_clusters():
+def set_closest_clusters(x, clusters):
     for curr_x in x:
-        closest_cluster = find_closest_cluster(curr_x[0], curr_x[1])
+        closest_cluster = find_closest_cluster(curr_x[0], curr_x[1], clusters)
         curr_x[2] = closest_cluster
 
 
-def recompute_centers():
+def recompute_centers(x, clusters, k):
     changed = False
     temp_clusters_sums = np.zeros((k, 3))
     for x_temp in x:
@@ -38,8 +38,8 @@ def recompute_centers():
 
     for i in range(k):
         if int(temp_clusters_sums[i][2]) != 0:
-            new_cluster_i_0 = temp_clusters_sums[i][0]/temp_clusters_sums[i][2]
-            new_cluster_i_1 = temp_clusters_sums[i][1]/temp_clusters_sums[i][2]
+            new_cluster_i_0 = temp_clusters_sums[i][0] / temp_clusters_sums[i][2]
+            new_cluster_i_1 = temp_clusters_sums[i][1] / temp_clusters_sums[i][2]
 
             if new_cluster_i_0 != clusters[i][0] or new_cluster_i_1 != clusters[i][1]:
                 changed = True
@@ -49,9 +49,9 @@ def recompute_centers():
     return changed
 
 
-if __name__ == '__main__':
+def k_means(k, filename):
     # import data
-    df = pan.read_csv('../../resources/2d_dataset/compound.csv')
+    df = pan.read_csv(filename)
 
     np.set_printoptions(precision=3, suppress=True)
 
@@ -64,7 +64,7 @@ if __name__ == '__main__':
     # print(x)
 
     # number of clusters
-    k = 4
+    # k = k
 
     # init clusters center
     # print("x.shape")
@@ -87,9 +87,11 @@ if __name__ == '__main__':
 
     change = True
     while change:
-        set_closest_clusters()
-        change = recompute_centers()
+        set_closest_clusters(x, clusters)
+        change = recompute_centers(x, clusters, k)
         # print_all()
 
-    print("Final result:")
-    print_all()
+    # print("Final result:")
+    # print_all(x, clusters)
+
+    return x
