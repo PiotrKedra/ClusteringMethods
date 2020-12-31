@@ -15,8 +15,8 @@ def jaccard_index(set_a, set_b):
     return union/len(set_a)
 
 
-A = [1, 0, 1, 3, 1]
-B = [1, 0, 1, 1, 1]
+A = [1, 0, 1, 5, 1]
+B = [1, 0, 1, 2, 2]
 print(jaccard_score(A, B, average='micro'))
 print(jaccard_index(A, B))
 
