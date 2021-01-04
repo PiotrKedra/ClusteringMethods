@@ -30,7 +30,7 @@ def set_closest_clusters(x, clusters):
 
 def recompute_centers(x, clusters, k):
     changed = False
-    temp_clusters_sums = np.zeros((k, 3))
+    temp_clusters_sums = np.zeros((k, x.shape[1]))
     for x_temp in x:
         temp_clusters_sums[int(x_temp[2])][0] += x_temp[0]
         temp_clusters_sums[int(x_temp[2])][1] += x_temp[1]
