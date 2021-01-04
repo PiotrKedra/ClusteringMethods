@@ -10,46 +10,79 @@ def print_all(x, clusters):
     plt.show()
 
 
-def find_closest_cluster(x0, x1, clusters):
-    closest_dist = dist((x0, x1), (clusters[0][0], clusters[0][1]))
+def initialize_clusters(x, k):
+    numb_of_features = x.shape[1] - 1
+
+    clusters_rand = [0] * numb_of_features
+    xi_max = max(x[:, 0])
+    xi_min = min(x[:, 0])
+    clusters_rand[0] = np.random.uniform(low=xi_min, high=xi_max, size=(k, 1))
+
+    clusters_without_numbers = clusters_rand[0]
+    for i in range(1, numb_of_features):
+        xi_max = max(x[:, i])
+        xi_min = min(x[:, i])
+        clusters_rand[i] = np.random.uniform(low=xi_min, high=xi_max, size=(k, 1))
+        clusters_without_numbers = np.concatenate((clusters_without_numbers, clusters_rand[i]), axis=1)
+
+    one_to_k = np.reshape(np.arange(k), (k, 1))
+
+    return np.concatenate((clusters_without_numbers, one_to_k), axis=1)
+
+
+def find_closest_cluster(x_row, clusters):
+    numb_of_features = len(x_row) - 1
     closest_cluster = 0
-    for i in range(clusters.shape[0]):
-        curr_dist = dist((x0, x1), (clusters[i][0], clusters[i][1]))
-        # print("curr i: " + str(i) + " curr dist: " + str(curr_dist))
-        if curr_dist < closest_dist:
-            closest_cluster = i
-            closest_dist = curr_dist
+    for i in range(numb_of_features):
+        closest_dist = dist(x_row[:-1], clusters[i][:-1])
+        for j in range(clusters.shape[0]):
+            curr_dist = dist(x_row[:-1], clusters[j][:-1])
+            # print("curr i: " + str(i) + " curr dist: " + str(curr_dist))
+            if curr_dist < closest_dist:
+                closest_cluster = j
+                closest_dist = curr_dist
     return closest_cluster
 
 
 def set_closest_clusters(x, clusters):
     for curr_x in x:
-        closest_cluster = find_closest_cluster(curr_x[0], curr_x[1], clusters)
-        curr_x[2] = closest_cluster
+        closest_cluster = find_closest_cluster(curr_x, clusters)
+        curr_x[-1] = closest_cluster
 
 
 def recompute_centers(x, clusters, k):
     changed = False
     temp_clusters_sums = np.zeros((k, x.shape[1]))
+    numb_of_features = x.shape[1] - 1
     for x_temp in x:
-        temp_clusters_sums[int(x_temp[2])][0] += x_temp[0]
-        temp_clusters_sums[int(x_temp[2])][1] += x_temp[1]
-        temp_clusters_sums[int(x_temp[2])][2] += 1
+        for i in range(numb_of_features):
+            temp_clusters_sums[int(x_temp[-1])][i] += x_temp[i]
 
+        temp_clusters_sums[int(x_temp[-1])][-1] += 1
+
+    new_cluster = np.zeros((k, numb_of_features))
     for i in range(k):
-        if int(temp_clusters_sums[i][2]) != 0:
-            new_cluster_i_0 = temp_clusters_sums[i][0] / temp_clusters_sums[i][2]
-            new_cluster_i_1 = temp_clusters_sums[i][1] / temp_clusters_sums[i][2]
+        if int(temp_clusters_sums[i][-1]) != 0:
+            for j in range(numb_of_features):
+                new_cluster[i][j] = temp_clusters_sums[i][j] / temp_clusters_sums[i][-1]
 
-            if new_cluster_i_0 != clusters[i][0] or new_cluster_i_1 != clusters[i][1]:
+            if any_cluster_to_change(new_cluster[i], clusters[i], numb_of_features):
                 changed = True
-                clusters[i][0] = new_cluster_i_0
-                clusters[i][1] = new_cluster_i_1
+                for j in range(numb_of_features):
+                    clusters[i][j] = new_cluster[i][j]
 
     return changed
 
 
-def k_means(k, filename):
+def any_cluster_to_change(new_cluster_i, clusters_i, numb_of_features):
+    for j in range(numb_of_features):
+        if new_cluster_i[j] != clusters_i[j]:
+            return True
+
+    return False
+
+
+def k_means(k, filename, print_plot = False):
     # import data
     df = pan.read_csv(filename)
 
@@ -61,27 +94,8 @@ def k_means(k, filename):
     x_without_clusters = data[:, :-1]
     initial_clusters = np.ones((n, 1)) * (-1)
     x = np.concatenate((x_without_clusters, initial_clusters), axis=1)
-    # print(x)
 
-    # number of clusters
-    # k = k
-
-    # init clusters center
-    # print("x.shape")
-    # print(x.shape)
-    x0_max = max(x[:, 0])
-    x0_min = min(x[:, 0])
-    x1_max = max(x[:, 1])
-    x1_min = min(x[:, 1])
-    clusters_rand_x0 = np.random.uniform(low=x0_min, high=x0_max, size=(k, 1))
-    # print("clusters_rand_x0.shape")
-    # print(clusters_rand_x0.shape)
-    clusters_rand_x1 = np.random.uniform(low=x1_min, high=x1_max, size=(k, 1))
-    # print("clusters_rand_x1.shape")
-    # print(clusters_rand_x1.shape)
-    one_to_k = np.reshape(np.arange(k), (k, 1))
-    clusters_without_numbers = np.concatenate((clusters_rand_x0, clusters_rand_x1), axis=1)
-    clusters = np.concatenate((clusters_without_numbers, one_to_k), axis=1)
+    clusters = initialize_clusters(x, k)
     # print("clusters.shape")
     # print(clusters)
 
@@ -90,8 +104,7 @@ def k_means(k, filename):
         set_closest_clusters(x, clusters)
         change = recompute_centers(x, clusters, k)
         # print_all()
-
-    # print("Final result:")
-    # print_all(x, clusters)
+    if print_plot:
+        print_all(x, clusters)
 
     return x
