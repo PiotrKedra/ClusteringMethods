@@ -1,12 +1,11 @@
-import matplotlib.pyplot as plt
-import pandas as pan
+from dbscan.dbscan import dbscan
+from k_means.k_means import k_means
+from src.measurement import DBI
+from sklearn import metrics as met
 
-data = pan.read_csv('../resources/2d_dataset/r15.csv')
-
-
-x = data[data.columns[0]]
-y = data[data.columns[1]]
-print(x)
-
-plt.scatter(x, y)
-plt.show()
+x = k_means(15, '../resources/2d_dataset/r15.csv')
+# x = dbscan(1, 3, '../resources/2d_dataset/compound.csv')
+dbi = DBI.computeDBI(x)
+dbi_sklearn = met.davies_bouldin_score(x[:, :-1], x[:, -1])
+print(dbi)
+print(dbi_sklearn)
