@@ -12,15 +12,16 @@ def calculate_centroids(x, n):
     centroids = np.concatenate((np.zeros((len(set(x[:, -1])), x.shape[1] - 1)), cluster_numbers), axis=1)
 
     for i in range(n):
-        sum = np.zeros(x.shape[1] - 1)
+        sums = np.zeros(x.shape[1] - 1)
         denominator = 0
         for curr_x in x:
             if curr_x[-1] == centroids[i][-1]:
-                sum[0] += curr_x[0]
-                sum[1] += curr_x[1]
+                for j in range(x.shape[1] - 1):
+                    sums[j] += curr_x[j]
                 denominator += 1
-        centroids[i][0] = sum[0] / denominator
-        centroids[i][1] = sum[1] / denominator
+
+        for j in range(x.shape[1] - 1):
+            centroids[i][j] = sums[j] / denominator
 
     return centroids
 
