@@ -18,7 +18,7 @@ def print_all(x):
 
 def find_not_visited(x, n):
     for i in range(n):
-        if x[i][2] < 0:
+        if x[i][-1] < 0:
             return i
 
     return -1
@@ -52,7 +52,7 @@ def add_neighbours_to_cluster(x, eps, n, neighbours, cluster_no):
     while len(neighbours) > 0:
         neighbour_id = neighbours.pop()
         find_not_visited_neighbours(x, eps, n, neighbour_id, neighbours)
-        x[neighbour_id, 2] = cluster_no
+        x[neighbour_id, -1] = cluster_no
 
 
 # def mark_singles_as_noise():
@@ -93,7 +93,7 @@ def dbscan(eps, min_no_of_neighbours, filename, print_plot=False):
         else:
             no_of_n = how_many_neighbours(x, eps, n, x_to_add)
             if no_of_n < min_no_of_neighbours:
-                x[x_to_add, 2] = 0
+                x[x_to_add, -1] = 0
             else:
                 found = True
                 to_add = set()
