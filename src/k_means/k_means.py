@@ -82,7 +82,7 @@ def any_cluster_to_change(new_cluster_i, clusters_i, numb_of_features):
     return False
 
 
-def k_means(k, filename, print_plot = False):
+def k_means(k, filename, print_plot=False):
     # import data
     df = pan.read_csv(filename)
 

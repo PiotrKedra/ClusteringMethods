@@ -68,7 +68,7 @@ def add_neighbours_to_cluster(x, eps, n, neighbours, cluster_no):
 #             curr_row[2] = 0
 
 
-def dbscan(eps, min_no_of_neighbours, filename):
+def dbscan(eps, min_no_of_neighbours, filename, print_plot=False):
     # import data
     df = pan.read_csv(filename)
     np.set_printoptions(precision=3, suppress=True)
@@ -104,7 +104,7 @@ def dbscan(eps, min_no_of_neighbours, filename):
 
     # for x_curr_pr in x:
     #     print(x_curr_pr)
-
-    # print_all(x)
+    if print_plot:
+        print_all(x)
 
     return x
