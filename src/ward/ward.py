@@ -153,9 +153,9 @@ def get_centroid_of_cluster(merged_cluster):
     return mean(merged_cluster, axis=0)
 
 
-data = pd.read_csv('../../resources/2d_dataset/jain.csv')
-data.drop(['label'], axis=1, inplace=True)
-# data = pd.read_csv('../meanshift/testing.csv')
-y_c = ward(data, n_clusters=2)
-plt.scatter(data[['x']], data[['y']], c=y_c)
-plt.show()
+# data = pd.read_csv('../../resources/2d_dataset/jain.csv')
+# data.drop(['label'], axis=1, inplace=True)
+# # data = pd.read_csv('../meanshift/testing.csv')
+# y_c = ward(data, n_clusters=2)
+# plt.scatter(data[['x']], data[['y']], c=y_c)
+# plt.show()
