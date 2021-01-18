@@ -17,15 +17,8 @@ plt.scatter(data[['x']], data[['y']], c=y_kmeans)
 
 
 plt.figure(2)
-data = pd.read_csv('../../resources/2d_dataset/aggregation.csv')
-kmeans = MeanShift(bandwidth=7)
-kmeans.fit(data)
-y_kmeans = kmeans.predict(data)
-plt.scatter(data[['x']], data[['y']], c=y_kmeans)
-
-plt.figure(3)
-data = pd.read_csv('../../resources/2d_dataset/jain.csv')
-kmeans = MeanShift(bandwidth=9)
+data = pd.read_csv('../../resources/2d_dataset/pathbased.csv')
+kmeans = MeanShift(bandwidth=6)
 kmeans.fit(data)
 y_kmeans = kmeans.predict(data)
 plt.scatter(data[['x']], data[['y']], c=y_kmeans)

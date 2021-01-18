@@ -1,5 +1,4 @@
 from dbscan.dbscan import dbscan
-from k_means.k_means import k_means
 from src.measurement import DBI
 from sklearn import metrics as met
 

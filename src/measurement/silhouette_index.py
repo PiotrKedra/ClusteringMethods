@@ -36,6 +36,8 @@ def silhouette_index(df, y):
                         'distances': [distance_matrix[i][j]]
                     })
 
+        if len(score_for_i['a']) == 0:
+            continue
         a_i = mean(score_for_i['a'])
         b_i = mean(score_for_i['b'][0]['distances'])
         for k in range(1, len(score_for_i['b'])):
